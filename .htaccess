@@ -1,0 +1,28 @@
+# MarketApp Reverse Proxy - Apache Configuration
+# Compatible with Apache 2.4+ and LiteSpeed
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Ensure Authorization header is passed to PHP in CGI/FastCGI environments
+    <IfModule mod_auth.c>
+        CGIPassAuth On
+    </IfModule>
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Prevent direct access to hidden files and system configs
+    RewriteRule ^\.(?!well-known/) - [F,NC]
+    RewriteRule ^composer\.(json|lock)$ - [F,NC]
+    RewriteRule ^AGENTS(\.md)?$ - [F,NC]
+
+    # Route all requests to index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# Disable Directory Browsing
+Options -Indexes
+
+# UTF-8 Encoding default
+AddDefaultCharset UTF-8

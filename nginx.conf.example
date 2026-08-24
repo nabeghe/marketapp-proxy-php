@@ -1,0 +1,41 @@
+# MarketApp Reverse Proxy - Nginx Configuration Example
+server {
+    listen 80;
+    server_name your-domain.com;
+    root /path/to/marketapp-proxy-php;
+    index index.php;
+
+    charset utf-8;
+
+    # Maximum allowed request body size (e.g. for uploads/payloads)
+    client_max_body_size 64M;
+
+    # Pass all requests to index.php
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # Deny access to hidden files and internal documents
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+
+    location ~ /(composer\.(json|lock)|AGENTS(\.md)?)$ {
+        deny all;
+    }
+
+    # PHP-FPM processing
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock; # Adjust to your PHP socket or 127.0.0.1:9000
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+
+        # Forward Authorization header
+        fastcgi_param HTTP_AUTHORIZATION $http_authorization;
+        
+        # Timeouts for long requests
+        fastcgi_read_timeout 120;
+        fastcgi_send_timeout 120;
+    }
+}

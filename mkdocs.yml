@@ -1,0 +1,67 @@
+site_name: MarketApp API Reverse Proxy
+site_description: High-performance, zero-dependency PHP Reverse Proxy for MarketApp API (PHP 7.4 - 8.5)
+site_author: Nabeghe
+repo_url: https://github.com/nabeghe/marketapp-proxy-php
+repo_name: nabeghe/marketapp-proxy-php
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+
+nav:
+  - Overview: index.md
+  - Guide:
+      - Introduction: guide/introduction.md
+      - Quick Start: guide/quick-start.md
+      - Architecture: guide/architecture.md
+      - Configuration: guide/configuration.md
+      - Client Integration & Base URL: guide/client-integration.md
+      - Authentication & Headers: guide/authentication.md
+      - CORS & Security: guide/cors-security.md
+  - Deployment:
+      - Deployment Overview: deployment/overview.md
+      - cPanel & Shared Hosting: deployment/cpanel.md
+      - Subfolder Installation: deployment/subfolder.md
+      - Nginx Server: deployment/nginx.md
+      - Docker: deployment/docker.md
+  - Testing & Debugging:
+      - Running Tests: guide/testing.md
+      - Troubleshooting: guide/troubleshooting.md

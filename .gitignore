@@ -1,0 +1,40 @@
+# Composer Dependencies
+/vendor/
+composer.phar
+
+# Environment & Local Configuration
+.env
+.env.backup
+.env.local
+.env.*.local
+config.local.php
+
+# Logs & Temporary Files
+*.log
+error_log
+*.tmp
+*.temp
+
+# PHPUnit & Testing Caches
+.phpunit.result.cache
+.phpunit.cache/
+/coverage/
+
+# IDE & Editor Files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.sublime-project
+*.sublime-workspace
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.
+
+#Custom
+*.iep
