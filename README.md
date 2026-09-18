@@ -1,125 +1,125 @@
 # MarketApp API Reverse Proxy (PHP)
 
-اسکریپت واسط (Reverse Proxy) سریع، سبک و امن برای ارجاع و بازگردانی مستقیم درخواست‌ها به API مارکت‌اپ (`https://api.marketapp.org/`).
+A fast, lightweight, and secure PHP reverse proxy designed to seamlessly forward and relay requests directly to the **MarketApp API** (`https://api.marketapp.org/`).
 
-این پروژه تمامی درخواست‌های ورودی (متدها، هدرها، بدنه، پارامترهای کوئری، فایل‌ها و استریم‌ها) را دریافت کرده، به سرور MarketApp فوروارد می‌کند و پاسخ دریافتی را بدون تغییر در وضعیت HTTP، هدرها و محتوا به کلاینت بازمی‌گرداند.
-
----
-
-## ویژگی‌ها (Features)
-
-- ⚡ **سازگاری کامل با نسخه‌های مختلف PHP:** سازگار با PHP 7.4 تا PHP 8.5.
-- 🚀 **بدون نیاز اجباری به کامپوزر (Zero-Dependency):** قابلیت اجرا به صورت Standalone تنها با آپلود فایل‌ها در هاست اشتراکی (cPanel, DirectAdmin, Plesk).
-- 🔄 **پشتیبانی کامل از تمامی متدهای HTTP:** `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `OPTIONS`, `HEAD`.
-- 📦 **پشتیبانی از انواع فرمت‌های داده:** `JSON`, `multipart/form-data`, `application/x-www-form-urlencoded`, `Raw Body / Binary Stream`.
-- 🔐 **مدیریت کامل هدرها و احراز هویت:** پشتیبانی از هدر `Authorization` (Bearer Token, Basic Auth)، هدرهای اختصاصی و فیلتر خودکار هدرهای Hop-by-Hop.
-- 🌐 **مدیریت خودکار CORS:** پاسخ‌دهی استاندارد به درخواست‌های Preflight (`OPTIONS`) و هدرهای `Access-Control-*`.
-- 🛠️ **پیکربندی وب‌سرورهای محبوب:** شامل فایل `.htaccess` برای Apache / LiteSpeed و نمونه کانفیگ برای Nginx.
-- 🔍 **قابلیت Debug Mode:** مشاهده جزئیات زمان اجرا، آدرس مقصد و خطاهای شبکه در هدرها و پاسخ‌ها.
+This project intercepts all incoming HTTP requests (methods, headers, payload/body, query parameters, multipart uploads, and binary streams), forwards them transparently to the MarketApp upstream API, and returns the response back to the client while preserving the HTTP status code, headers, and content intact.
 
 ---
 
-## ساختار فایل‌ها (Project Structure)
+## Features
+
+- ⚡ **Full PHP Version Compatibility:** Compatible with PHP 7.4 through PHP 8.5.
+- 🚀 **Zero-Dependency:** Runs standalone out-of-the-box by simply uploading files to any shared hosting (cPanel, DirectAdmin, Plesk) or VPS without requiring Composer.
+- 🔄 **Comprehensive HTTP Method Support:** Full support for `GET`, `POST`, `PUT`, `DELETE`, `PATCH`, `OPTIONS`, and `HEAD`.
+- 📦 **All Data Formats Supported:** Seamlessly handles `JSON`, `multipart/form-data`, `application/x-www-form-urlencoded`, and raw body / binary streams.
+- 🔐 **Header & Authentication Handling:** Full support for `Authorization` headers (`Bearer` token, `Basic` auth), custom headers, and automatic filtering of hop-by-hop headers.
+- 🌐 **Automatic CORS Management:** Standard responses for preflight (`OPTIONS`) requests with configurable `Access-Control-*` headers.
+- 🛠️ **Ready-to-use Web Server Configurations:** Includes `.htaccess` for Apache / LiteSpeed and sample configuration for Nginx.
+- 🔍 **Debug Mode:** Inspect execution time, target URL, and network errors directly in headers and error responses.
+
+---
+
+## Project Structure
 
 ```
 marketapp-proxy-php/
 ├── .agents/
 │   └── skills/
 │       └── marketapp-proxy/
-│           └── SKILL.md          # دستورالعمل‌های اختصاصی ایجنت
+│           └── SKILL.md          # Agent guidelines & skill specification
 ├── src/
-│   ├── Config.php                # مدیریت تنظیمات
+│   ├── Config.php                # Configuration manager
 │   ├── Http/
-│   │   ├── Request.php           # دریافت و پردازش درخواست کلاینت
-│   │   └── Response.php          # ساخت و ارسال پاسخ به کلاینت
-│   └── ProxyEngine.php           # موتور فوروارد درخواست‌ها با cURL
-├── config.example.php            # نمونه فایل تنظیمات
-├── config.php                    # فایل تنظیمات فعال
-├── index.php                     # نقطه ورود اصلی پروژه
-├── .htaccess                     # کانفیگ ریرایت و احراز هویت برای آپاچی
-├── nginx.conf.example            # نمونه کانفیگ برای Nginx
-├── composer.json                 # تنظیمات Composer و PSR-4
-├── AGENTS.md                     # راهنمای ایجنت‌های هوش مصنوعی
-└── README.md                     # راهنمای کامل پروژه
+│   │   ├── Request.php           # Client request capture and parsing
+│   │   └── Response.php          # Upstream response construction and emitting
+│   └── ProxyEngine.php           # cURL request forwarding engine
+├── config.example.php            # Default configuration template
+├── config.php                    # Active local configuration
+├── index.php                     # Main application entry point
+├── .htaccess                     # Apache/LiteSpeed rewrite and authorization rules
+├── nginx.conf.example            # Sample Nginx server block configuration
+├── composer.json                 # Composer definition & PSR-4 autoloading
+├── AGENTS.md                     # AI agent guidelines and architecture notes
+└── README.md                     # Comprehensive documentation
 ```
 
 ---
 
-## پیش‌نیازها (Requirements)
+## Requirements
 
-- **PHP:** نسخه 7.4 یا بالاتر (شامل 8.0, 8.1, 8.2, 8.3, 8.4, 8.5)
+- **PHP:** Version 7.4 or higher (including 8.0, 8.1, 8.2, 8.3, 8.4, 8.5)
 - **PHP Extensions:** `curl`, `json`
-- **Web Server:** Apache (با `mod_rewrite`), LiteSpeed, Nginx یا وب‌سرور داخلی PHP
+- **Web Server:** Apache (with `mod_rewrite`), LiteSpeed, Nginx, or PHP built-in web server
 
 ---
 
-## نحوه نصب و راه‌اندازی (Installation & Setup)
+## Installation & Setup
 
-### روش ۱: هاست اشتراکی (cPanel / DirectAdmin / Plesk)
-1. محتویات این مخزن را در ریشه هاست یا پوشه ساب‌دامین مورد نظر خود آپلود کنید.
-2. مطمئن شوید فایل `.htaccess` آپلود شده و مخفی نمانده است.
-3. در صورت نیاز، تنظیمات فایل `config.php` را ویرایش کنید.
-4. اکنون تمامی اندپوینت‌های شما به عنوان پروکسی مارکت‌اپ عمل می‌کنند.
+### Method 1: Shared Hosting (cPanel / DirectAdmin / Plesk)
+1. Upload the contents of this repository to your web root (`public_html`) or target subdomain folder.
+2. Ensure the `.htaccess` file is uploaded and not hidden by your file manager.
+3. If needed, customize settings in `config.php`.
+4. Your domain or subdomain now operates as a reverse proxy for MarketApp API.
 
-### روش ۲: سرور لینوکس با Nginx
-1. فایل‌های پروژه را در دایرکتوری مورد نظر (مثلاً `/var/www/marketapp-proxy`) قرار دهید.
-2. فایل `nginx.conf.example` را بررسی و تنظیمات `server` آن را به کانفیگ Nginx خود اضافه کنید:
+### Method 2: Linux Server with Nginx
+1. Place the project files into your target directory (e.g. `/var/www/marketapp-proxy`).
+2. Review `nginx.conf.example` and add the `location` directive to your Nginx configuration:
    ```nginx
    location / {
        try_files $uri $uri/ /index.php?$query_string;
    }
    ```
-3. سرویس Nginx و PHP-FPM را ریلود کنید:
+3. Reload Nginx and PHP-FPM:
    ```bash
    sudo systemctl reload nginx
    ```
 
-### روش ۳: اجرای لوکال با سرور داخلی PHP (Local Development)
-برای تست سریع بدون نیاز به وب‌سرور خارجی:
+### Method 3: Local Development with PHP Built-in Server
+For quick testing without requiring an external web server:
 ```bash
 php -S 127.0.0.1:8080 index.php
 ```
 
 ---
 
-## پیکربندی (Configuration)
+## Configuration
 
-تنظیمات در فایل `config.php` قرار دارند و همچنین از طریق Environment Variables نیز قابل بازنویسی هستند:
+Settings are defined in `config.php` and can also be overridden via Environment Variables:
 
 ```php
 <?php
 
 return [
-    // آدرس مقصد API مارکت‌اپ
+    // Target MarketApp API base URL
     'target_url' => 'https://api.marketapp.org',
 
-    // تایم‌اوت برقراری اتصال (ثانیه)
+    // Connection timeout in seconds
     'connect_timeout' => 15,
 
-    // حداکثر زمان اجرای درخواست (ثانیه)
+    // Total request execution timeout in seconds
     'timeout' => 60,
 
-    // بررسی گواهی SSL سرور مقصد
+    // Verify upstream SSL certificate
     'ssl_verify' => true,
 
-    // فعال‌سازی حالت دیباگ و مشاهده هدرهای پروکسی
+    // Enable debug mode to inspect proxy headers and detailed errors
     'debug' => false,
 
-    // ارسال IP واقعی کاربر با هدرهای X-Forwarded-*
+    // Forward client real IP via X-Forwarded-* headers
     'forward_client_ip' => true,
 
-    // مدیریت خودکار CORS
+    // Automatic CORS management
     'enable_cors' => true,
     'cors_origin' => '*',
 
-    // هدرهای سفارشی اختیاری
+    // Optional custom headers to inject into upstream requests
     'custom_headers' => [
         // 'X-Custom-Token' => '...',
     ],
 ];
 ```
 
-### متغیرهای محیطی پشتیبانی‌شده (Environment Variables)
+### Supported Environment Variables
 - `MARKETAPP_TARGET_URL`
 - `MARKETAPP_TIMEOUT`
 - `MARKETAPP_CONNECT_TIMEOUT`
@@ -130,23 +130,23 @@ return [
 
 ---
 
-## نحوه استفاده و تست (Usage & Testing)
+## Usage & Testing
 
-پس از بالا آمدن سرور پروکسی، تمامی اندپوینت‌های مستندات MarketApp (`https://api.marketapp.org/docs/`) دقیقاً با همان مسیرها در دامنه شما در دسترس خواهند بود:
+Once the proxy server is running, all endpoints documented in the MarketApp API Docs (`https://api.marketapp.org/docs/`) are accessible on your domain with identical paths:
 
-### ۱. تست مشاهده مستندات (Docs)
+### 1. Test Viewing Docs
 ```bash
 curl -i http://your-proxy-domain.com/docs/
 ```
 
-### ۲. تست ارسال درخواست GET با توکن احراز هویت
+### 2. Test GET Request with Authorization Token
 ```bash
 curl -i -X GET http://your-proxy-domain.com/api/v1/user/profile \
   -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Accept: application/json"
 ```
 
-### ۳. تست ارسال درخواست POST همراه با بدنه JSON
+### 3. Test POST Request with JSON Body
 ```bash
 curl -i -X POST http://your-proxy-domain.com/api/v1/orders \
   -H "Content-Type: application/json" \
@@ -157,30 +157,30 @@ curl -i -X POST http://your-proxy-domain.com/api/v1/orders \
   }'
 ```
 
-## اجرای تست‌های خودکار (Automated Testing)
+## Automated Testing
 
-پروژه دارای یک مجموعه کامل تست یونیت بدون هیچ‌گونه وابستگی خارجی است:
+The project includes an automated test suite with zero external dependencies:
 
 ```bash
-# اجرای مستقیم تست‌ها با PHP
+# Run tests directly with PHP
 php tests/run.php
 
-# یا از طریق کامپوزر
+# Or via Composer
 composer test
 ```
 
 ---
 
-## عیب‌یابی (Troubleshooting)
+## Troubleshooting
 
-| مشکل | علت احتمالی | راه‌حل |
+| Issue | Possible Cause | Solution |
 | :--- | :--- | :--- |
-| **هدر Authorization دریافت نمی‌شود** | آپاچی هدر را به PHP پاس نمی‌دهد | مطمئن شوید خطوط `CGIPassAuth On` و `RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]` در `.htaccess` وجود دارند. |
-| **خطای 404 برای اندپوینت‌ها** | ماژول `mod_rewrite` در آپاچی فعال نیست | دستور `a2enmod rewrite` را در سرور اجرا کرده و آپاچی را ری‌استارت کنید. |
-| **خطای 502 / 504** | عدم دسترسی به سرور مارکت‌اپ یا تایم‌اوت | بررسی اتصال اینترنت سرور، DNS و تنظیم `timeout` در `config.php`. |
-| **خطای اعتبارسنجی SSL در لوکال** | نبود CA Bundle معتبر در PHP سیستم محلی | مقدار `'ssl_verify' => false` را در محیط توسعه قرار دهید (در محیط پروداکشن حتماً `true` باشد). |
+| **Missing `Authorization` Header** | Apache does not pass the Authorization header to PHP in CGI/FastCGI mode | Ensure `CGIPassAuth On` and `RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]` are present in `.htaccess`. |
+| **404 Not Found for Endpoints** | Apache `mod_rewrite` is disabled or `.htaccess` is ignored | Enable `mod_rewrite` (`a2enmod rewrite`), verify `AllowOverride All` in your virtual host config, and restart Apache. |
+| **502 / 504 Gateway Errors** | MarketApp server unreachable or connection timed out | Verify server internet connectivity, DNS resolution, and increase `timeout` in `config.php`. |
+| **SSL Verification Failure (Localhost)** | Missing valid CA bundle in local PHP environment | Set `'ssl_verify' => false` in local development environments (keep it `true` in production). |
 
 ---
 
-## لایسنس (License)
-این پروژه تحت مجوز [MIT](LICENSE) منتشر شده است.
+## License
+This project is open-source software licensed under the [MIT License](LICENSE.md).
