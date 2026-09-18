@@ -38,6 +38,7 @@ marketapp-proxy-php/
 │   └── ProxyEngine.php        # cURL reverse proxy forwarding engine
 ├── config.example.php         # Default configuration template
 ├── config.php                 # Active local configuration
+├── autoload.php               # Standalone built-in PSR-4 autoloader
 ├── index.php                  # Single entry point
 ├── .htaccess                  # Apache rewrite & headers rule
 ├── nginx.conf.example         # Nginx server block configuration

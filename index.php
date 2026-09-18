@@ -11,27 +11,11 @@ declare(strict_types=1);
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
     require_once __DIR__ . '/vendor/autoload.php';
 } else {
-    spl_autoload_register(function (string $class) {
-        $prefix = 'Nabeghe\\MarketAppProxy\\';
-        $baseDir = __DIR__ . '/src/';
-
-        $len = strlen($prefix);
-        if (strncmp($prefix, $class, $len) !== 0) {
-            return;
-        }
-
-        $relativeClass = substr($class, $len);
-        $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
-
-        if (file_exists($file)) {
-            require_once $file;
-        }
-    });
+    require_once __DIR__ . '/autoload.php';
 }
 
 use Nabeghe\MarketAppProxy\Config;
 use Nabeghe\MarketAppProxy\Http\Request;
-use Nabeghe\MarketAppProxy\Http\Response;
 use Nabeghe\MarketAppProxy\ProxyEngine;
 
 // 2. Load Configuration
